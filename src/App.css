@@ -1,9 +1,8 @@
 .App {
   text-align: center;
 }
-
 .App .layout {
-  height: 100vh;
+  min-height: 100vh;
 }
 .App .header {
   color: #fff;
@@ -12,15 +11,19 @@
   height: 55px;
 }
 .App .sidebar {
-  padding: 10px;
-}
-.App .sidebar label {
   color: #fff;
+  padding: 10px;
 }
 .App .content {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
+  flex-wrap: wrap;
+}
+.App .content .card {
+  min-width: 300px;
+  max-width: 600px;
+  margin: 30px;
 }
 .App .footer {
   background-color: #fff;
