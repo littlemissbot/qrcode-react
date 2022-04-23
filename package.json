@@ -1,8 +1,8 @@
 {
   "name": "qrcode-react",
-  "homepage": "qrcode-react",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/qrcode-react",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@mui/material": "^5.5.2",
