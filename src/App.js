@@ -28,7 +28,10 @@ function App() {
       color: {
         dark: values.optionDarkColor, // lines
         light: values.optionLightColor // background
-      }
+      },
+      // scale: values.optionScale, // 4
+      maskPattern: values.optionMaskPattern,
+      width: values.optionWidth
     }
     
     QRCode.toDataURL(values.dataUrl, options)
@@ -47,6 +50,14 @@ function App() {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
+  const onDownloadImage = (uri, name) => {
+    var link = document.createElement("a");
+    link.download = "qrcode";
+    link.href = dataUrl;
+    document.body.appendChild(link);
+    link.click();
+  }
 
   return (
     <div className='App'>
@@ -69,10 +80,12 @@ function App() {
                 autoComplete="off"
                 initialValues={{
                   optionImageType: "image/png",
-                  optionMargin: 5,
+                  optionMargin: 1,
                   optionQuality: 0.5,
                   optionDarkColor: "#000000",
-                  optionLightColor: "#FFFFFF"
+                  optionLightColor: "#FFFFFF",
+                  optionMaskPattern: 0,
+                  optionWidth: 200
                 }}
               >
                 <Form.Item
@@ -120,7 +133,7 @@ function App() {
                 <Row>
                   <Col flex={2}>
                     <Form.Item
-                      label="Background Color"
+                      label="Background Color (HEX)"
                       name="optionDarkColor"
                       style={{ paddingRight: '15px' }}
                     >
@@ -129,11 +142,32 @@ function App() {
                   </Col>
                   <Col flex={2}>
                     <Form.Item
-                      label="QR Code Color"
+                      label="QR Code Color (HEX)"
                       name="optionLightColor"
                       style={{ paddingLeft: '15px' }}
                     >
                       <Input placeholder="QR Code Color" size="large" disabled />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col flex={2}>
+                    <Form.Item
+                      label="Mask Pattern"
+                      name="optionMaskPattern"
+                      style={{ paddingRight: '15px' }}
+                    >
+                      <InputNumber min={0} max={7} placeholder="Mask Pattern" size="large" style={{ width: '100%' }} />
+                    </Form.Item>
+                  </Col>
+                  <Col flex={2}>
+                    <Form.Item
+                      label="Width (px)"
+                      name="optionWidth"
+                      style={{ paddingLeft: '15px' }}
+                    >
+                      <InputNumber min={200} max={1200} placeholder="Width" size="large" style={{ width: '100%' }} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -144,7 +178,7 @@ function App() {
                   </Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button shape="round" block icon={<DownloadOutlined />} size="large">
+                  <Button shape="round" block icon={<DownloadOutlined />} size="large" onClick={onDownloadImage} disabled={dataUrl === "https://samita.in/assets/image/samita-qrcode.png"}>
                     Download
                   </Button>
                 </Form.Item>
