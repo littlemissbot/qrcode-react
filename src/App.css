@@ -5,10 +5,20 @@
   min-height: 100vh;
 }
 .App .header {
+  text-align: left;
   color: #fff;
 }
 .App .header .logo {
-  height: 55px;
+  height: 50px;
+  margin-right: 10px;
+}
+.App .header .projecttitle {
+  /* display: inline-block; */
+  color: #fff;
+}
+.App .header .projecttitle small {
+  font-size: 70%;
+  margin-left: 5px;
 }
 .App .sidebar {
   color: #fff;

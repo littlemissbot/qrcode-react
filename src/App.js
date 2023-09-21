@@ -1,54 +1,73 @@
-import logo from './logo.svg';
+import logo from "./logo.png";
 
-import './App.css';
-import 'antd/dist/antd.css';
+import "./App.css";
+import "antd/dist/antd.css";
 
-import React, { useState } from 'react';
-import QRCode from 'qrcode'
+import React, { useState } from "react";
+import QRCode from "qrcode";
 
-import { BarcodeOutlined, DownloadOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Layout, Form, Input, InputNumber, Slider, Select, Button, Card, Spin, Row, Col } from 'antd';
+import {
+  BarcodeOutlined,
+  DownloadOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
+import {
+  Layout,
+  Form,
+  Input,
+  InputNumber,
+  Slider,
+  Select,
+  Button,
+  Card,
+  Spin,
+  Row,
+  Col,
+} from "antd";
 const { Header, Footer, Sider, Content } = Layout;
 const { Meta } = Card;
 const { Option } = Select;
 const LoaderTemplate = <LoadingOutlined style={{ fontSize: 32 }} spin />;
 
 function App() {
-  const [dataUrl, setDataUrl] = useState("https://samita.in/assets/image/samita-qrcode.png");
+  const [dataUrl, setDataUrl] = useState(
+    "https://samita.in/assets/image/samita-qrcode.png"
+  );
   const [loading, setLoading] = useState(false);
 
   const onFinish = (values) => {
-    console.log('Success:', values);
+    console.log("Success:", values);
 
-    setLoading(true)
+    setLoading(true);
     const options = {
+      version: values.optionVersion,
       type: values.optionImageType,
       quality: values.optionQuality,
       margin: values.optionMargin,
       color: {
         dark: values.optionDarkColor, // lines
-        light: values.optionLightColor // background
+        light: values.optionLightColor, // background
       },
-      // scale: values.optionScale, // 4
+      scale: values.optionScale,
       maskPattern: values.optionMaskPattern,
-      width: values.optionWidth
-    }
-    
+      width: values.optionWidth,
+    };
+
     QRCode.toDataURL(values.dataUrl, options)
-      .then(url => {
+      .then((url) => {
         setTimeout(() => {
-          console.log(url)
-          setDataUrl(url)
-          setLoading(false)
-        }, 3000)
+          console.log(url);
+          setDataUrl(url);
+          setLoading(false);
+        }, 3000);
       })
-      .catch(err => {
-        console.error(err)
-      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   const onDownloadImage = (uri, name) => {
@@ -57,21 +76,20 @@ function App() {
     link.href = dataUrl;
     document.body.appendChild(link);
     link.click();
-  }
+  };
 
   return (
-    <div className='App'>
-      <Layout className='layout'>
-        <Header className='header'>
-          <img src={logo} alt="qrcodereact" className='logo' />
-          QR Code Generator | React
+    <div className="App">
+      <Layout className="layout">
+        <Header className="header">
+          {/* <img src={logo} alt="qrcodereact" className="logo" /> */}
+          <h3 className="projecttitle">
+            QR Code Generator <small>Powered By Samita Mondal</small>
+          </h3>
         </Header>
         <Layout>
-          <Content className='content'>
-            <Card
-              className='card'
-            >
-              <p>The Free QR Code Generator for High Quality QR Codes</p>
+          <Content className="content">
+            <Card className="card">
               <Form
                 name="basic"
                 layout="vertical"
@@ -85,7 +103,7 @@ function App() {
                   optionDarkColor: "#000000",
                   optionLightColor: "#FFFFFF",
                   optionMaskPattern: 0,
-                  optionWidth: 200
+                  optionWidth: 300,
                 }}
               >
                 <Form.Item
@@ -94,40 +112,24 @@ function App() {
                   rules={[
                     {
                       required: true,
-                      message: 'Please input a website url!',
+                      message: "Please input a website url!",
                     },
                   ]}
                 >
                   <Input placeholder="Website URL" size="large" />
                 </Form.Item>
-                <Form.Item
-                  label="Image Type"
-                  name="optionImageType">
+                <Form.Item label="Image Type" name="optionImageType">
                   <Select size="large">
                     <Option value="image/png">PNG</Option>
                     <Option value="image/jpeg">JPEG</Option>
                     <Option value="image/webp">WebP</Option>
                   </Select>
                 </Form.Item>
-                <Form.Item
-                  label="Margin"
-                  name="optionMargin"
-                >
-                  <Slider
-                    min={1}
-                    max={20}
-                    step={1}
-                  />
+                <Form.Item label="Margin" name="optionMargin">
+                  <Slider min={1} max={20} step={1} />
                 </Form.Item>
-                <Form.Item
-                  label="Quality"
-                  name="optionQuality"
-                >
-                  <Slider
-                    min={0}
-                    max={1}
-                    step={0.1}
-                  />
+                <Form.Item label="Quality" name="optionQuality">
+                  <Slider min={0} max={1} step={0.1} />
                 </Form.Item>
                 <br />
                 <Row>
@@ -135,18 +137,18 @@ function App() {
                     <Form.Item
                       label="Background Color (HEX)"
                       name="optionDarkColor"
-                      style={{ paddingRight: '15px' }}
+                      style={{ paddingRight: "15px" }}
                     >
-                      <Input placeholder="Background Color" size="large" disabled />
+                      <Input placeholder="Background Color" size="large" />
                     </Form.Item>
                   </Col>
                   <Col flex={2}>
                     <Form.Item
                       label="QR Code Color (HEX)"
                       name="optionLightColor"
-                      style={{ paddingLeft: '15px' }}
+                      style={{ paddingLeft: "15px" }}
                     >
-                      <Input placeholder="QR Code Color" size="large" disabled />
+                      <Input placeholder="QR Code Color" size="large" />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -156,50 +158,112 @@ function App() {
                     <Form.Item
                       label="Mask Pattern"
                       name="optionMaskPattern"
-                      style={{ paddingRight: '15px' }}
+                      style={{ paddingRight: "15px" }}
                     >
-                      <InputNumber min={0} max={7} placeholder="Mask Pattern" size="large" style={{ width: '100%' }} />
+                      <InputNumber
+                        min={0}
+                        max={7}
+                        placeholder="Mask Pattern"
+                        size="large"
+                        style={{ width: "100%" }}
+                      />
                     </Form.Item>
                   </Col>
                   <Col flex={2}>
                     <Form.Item
                       label="Width (px)"
                       name="optionWidth"
-                      style={{ paddingLeft: '15px' }}
+                      style={{ paddingLeft: "15px" }}
                     >
-                      <InputNumber min={200} max={1200} placeholder="Width" size="large" style={{ width: '100%' }} />
+                      <InputNumber
+                        min={200}
+                        max={1200}
+                        placeholder="Width"
+                        size="large"
+                        style={{ width: "100%" }}
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
-                <br/>
+
+                <Row>
+                  <Col flex={2}>
+                    <Form.Item
+                      label="Version"
+                      name="optionVersion"
+                      style={{ paddingRight: "15px" }}
+                    >
+                      <InputNumber
+                        min={1}
+                        max={40}
+                        placeholder="Version"
+                        size="large"
+                        style={{ width: "100%" }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col flex={2}>
+                    <Form.Item
+                      label="Scale (px)"
+                      name="optionScale"
+                      style={{ paddingLeft: "15px" }}
+                    >
+                      <InputNumber
+                        min={1}
+                        max={40}
+                        placeholder="Scale"
+                        size="large"
+                        style={{ width: "100%" }}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <br />
                 <Form.Item>
-                  <Button type="primary" block shape="round" icon={<BarcodeOutlined />} size="large" htmlType="submit">
+                  <Button
+                    type="primary"
+                    block
+                    shape="round"
+                    icon={<BarcodeOutlined />}
+                    size="large"
+                    htmlType="submit"
+                  >
                     Generate Code
                   </Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button shape="round" block icon={<DownloadOutlined />} size="large" onClick={onDownloadImage} disabled={dataUrl === "https://samita.in/assets/image/samita-qrcode.png"}>
+                  <Button
+                    shape="round"
+                    block
+                    icon={<DownloadOutlined />}
+                    size="large"
+                    onClick={onDownloadImage}
+                    disabled={
+                      dataUrl ===
+                      "https://samita.in/assets/image/samita-qrcode.png"
+                    }
+                  >
                     Download
                   </Button>
                 </Form.Item>
               </Form>
             </Card>
             <Spin indicator={LoaderTemplate} spinning={loading}>
-              <Card
-                className='card'
-                cover={<img alt="qrcode" src={dataUrl} />}
-              >
-                <Meta title="Samita Mondal" description="Professional website developer, based in Bangalore." />
+              <Card className="card" cover={<img alt="qrcode" src={dataUrl} />}>
+                <Meta
+                  title="Samita Mondal"
+                  description="Professional website developer, based in Bangalore."
+                />
               </Card>
             </Spin>
           </Content>
-          <Sider className='sidebar'>
+          {/* <Sider className="sidebar">
             <p>Advertisements</p>
-          </Sider>
+          </Sider> */}
         </Layout>
-        <Footer className='footer'>
+        {/* <Footer className='footer'>
           <p>&copy; Copyrights Samita M. All rights reserved.</p>
-        </Footer>
+        </Footer> */}
       </Layout>
     </div>
   );
