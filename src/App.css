@@ -1,11 +1,9 @@
-.App {
-  text-align: center;
-}
 .App .layout {
   min-height: 100vh;
 }
 .App .header {
   text-align: left;
+  background-color: #a0d911;
   color: #fff;
 }
 .App .header .logo {
@@ -15,10 +13,11 @@
 .App .header .projecttitle {
   /* display: inline-block; */
   color: #fff;
+  margin: 0;
+  line-height: 3.2;
 }
 .App .header .projecttitle small {
-  font-size: 70%;
-  margin-left: 5px;
+  font-size: 50%;
 }
 .App .sidebar {
   color: #fff;
