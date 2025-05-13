@@ -1,0 +1,32 @@
+.qr-type-selector {
+  width: 100%;
+}
+
+.qr-type-radio {
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+}
+
+.qr-type-radio .ant-radio-button-input {
+  display: none;
+}
+
+.qr-type-card {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.qr-type-radio.ant-radio-button-wrapper-checked .qr-type-card {
+  border-color: #a0d911;
+  box-shadow: 0 0 8px rgba(160, 217, 17, 0.2);
+}
+
+.qr-type-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.qr-type-radio.ant-radio-button-wrapper-checked .qr-type-card:hover {
+  box-shadow: 0 4px 12px rgba(160, 217, 17, 0.3);
+}
