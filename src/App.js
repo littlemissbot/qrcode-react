@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import { ConfigProvider, theme, Layout, Typography } from "antd";
 import TypeSelection from "./pages/TypeSelection";
 import QRCodeForm from "./pages/QRCodeForm";
+import QrCodeLogo from "./qrcode.png";
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 function App() {
@@ -42,6 +43,8 @@ function App() {
     window.history.pushState({}, "", "/");
   };
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="App">
       <ConfigProvider
@@ -55,9 +58,23 @@ function App() {
         }}
       >
         <Layout style={{ minHeight: "100vh" }}>
-          <Header className="header">
-            <Title level={4} className="projecttitle">
-              QR Code Generator <small>Powered By Samita Mondal</small>
+          <Header
+            className="header"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <img
+              src={QrCodeLogo}
+              alt="QR Code Logo"
+              style={{
+                height: 40,
+                marginRight: 16,
+                background: "#fff",
+                borderRadius: 8,
+                padding: 4,
+              }}
+            />
+            <Title level={4} className="projecttitle" style={{ margin: 0 }}>
+              QRx
             </Title>
           </Header>
           <Content style={{ padding: "24px", position: "relative" }}>
@@ -69,6 +86,15 @@ function App() {
               )}
             </div>
           </Content>
+          <Footer
+            style={{
+              textAlign: "center",
+              background: "#fcffe6",
+              color: "#888",
+            }}
+          >
+            Copyrights &copy; {currentYear} Samita. All right reserved
+          </Footer>
         </Layout>
       </ConfigProvider>
     </div>
