@@ -13,6 +13,14 @@ function App() {
   const [qrType, setQrType] = useState(null);
 
   useEffect(() => {
+    // Check initial URL state
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get("type");
+    if (type) {
+      setCurrentPage("form");
+      setQrType(type);
+    }
+
     // Handle browser back/forward buttons
     const handlePopState = () => {
       const params = new URLSearchParams(window.location.search);
@@ -77,7 +85,10 @@ function App() {
               QRx
             </Title>
           </Header>
-          <Content style={{ padding: "24px", position: "relative" }}>
+          <Content
+            className="content"
+            style={{ padding: "24px", position: "relative" }}
+          >
             <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
               {currentPage === "type-selection" ? (
                 <TypeSelection onTypeSelect={handleTypeSelect} />

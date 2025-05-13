@@ -189,11 +189,9 @@ const QRCodeForm = ({ qrType, onBack }) => {
   return (
     <div>
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
-        <Space>
-          <Button icon={<ArrowLeftOutlined />} onClick={onBack}>
-            Back to Types
-          </Button>
-          <Title level={3} style={{ margin: 0 }}>
+        <Space style={{ width: "100%" }}>
+          <Button icon={<ArrowLeftOutlined />} onClick={onBack} type="text" />
+          <Title level={4} style={{ margin: 0 }} block>
             {getTypeTitle(qrType)}
           </Title>
         </Space>
