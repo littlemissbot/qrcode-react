@@ -1,0 +1,18 @@
+.url-form {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.url-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.url-form .ant-form-item-label {
+  font-weight: 500;
+}
+
+.url-form .ant-input {
+  border-radius: 4px;
+}

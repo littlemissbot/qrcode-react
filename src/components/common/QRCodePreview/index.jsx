@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Button, Spin, Collapse } from "antd";
 import { DownloadOutlined, LoadingOutlined } from "@ant-design/icons";
+import "./styles.css";
 
 const { Panel } = Collapse;
 const LoaderTemplate = <LoadingOutlined style={{ fontSize: 32 }} spin />;
@@ -8,7 +9,7 @@ const LoaderTemplate = <LoadingOutlined style={{ fontSize: 32 }} spin />;
 const QRCodePreview = ({ dataUrl, loading, onDownload, qrDataString }) => {
   return (
     <Card
-      className="card"
+      className="qr-code-preview-card"
       style={{
         width: "100%",
         margin: "0 auto",

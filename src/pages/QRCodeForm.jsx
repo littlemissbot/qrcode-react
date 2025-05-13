@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button, Typography, Space } from "antd";
 import { BarcodeOutlined, ArrowLeftOutlined } from "@ant-design/icons";
-import VCardForm from "../components/VCardForm";
-import WifiForm from "../components/qr-types/WifiForm";
-import EmailForm from "../components/qr-types/EmailForm";
-import SmsForm from "../components/qr-types/SmsForm";
-import UrlForm from "../components/qr-types/UrlForm";
-import PhoneForm from "../components/qr-types/PhoneForm";
-import TextForm from "../components/qr-types/TextForm";
-import QRCodePreview from "../components/QRCodePreview";
-import QRCodeCustomization from "../components/QRCodeCustomization";
+import VCardForm from "../components/forms/VCardForm";
+import WifiForm from "../components/forms/qr-types/WifiForm";
+import EmailForm from "../components/forms/qr-types/EmailForm";
+import SmsForm from "../components/forms/qr-types/SmsForm";
+import UrlForm from "../components/forms/qr-types/UrlForm";
+import PhoneForm from "../components/forms/qr-types/PhoneForm";
+import TextForm from "../components/forms/qr-types/TextForm";
+import QRCodePreview from "../components/common/QRCodePreview";
+import QRCodeCustomization from "../components/forms/QRCodeCustomization";
 import { generateVCardString } from "../types/vCard";
 import {
   generateWifiString,

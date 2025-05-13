@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "antd";
-import QRCodeTypeSelector from "../components/QRCodeTypeSelector";
+import QRCodeTypeSelector from "../components/common/QRCodeTypeSelector";
 
 const { Title } = Typography;
 

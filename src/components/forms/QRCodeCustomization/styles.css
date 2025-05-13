@@ -1,0 +1,26 @@
+.qr-code-customization {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.qr-code-customization .ant-form-item {
+  margin-bottom: 24px;
+}
+
+.qr-code-customization .ant-form-item-label {
+  font-weight: 500;
+}
+
+.qr-code-customization .ant-slider {
+  margin: 10px 0;
+}
+
+.qr-code-customization .ant-color-picker {
+  width: 100%;
+}
+
+.qr-code-customization .ant-input-number {
+  width: 100%;
+}

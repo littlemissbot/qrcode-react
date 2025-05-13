@@ -1,0 +1,23 @@
+.sms-form {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sms-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.sms-form .ant-form-item-label {
+  font-weight: 500;
+}
+
+.sms-form .ant-input,
+.sms-form .ant-input-textarea {
+  border-radius: 4px;
+}
+
+.sms-form .ant-row {
+  margin-bottom: 16px;
+}

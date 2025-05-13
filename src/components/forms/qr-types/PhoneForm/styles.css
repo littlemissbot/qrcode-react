@@ -1,0 +1,18 @@
+.phone-form {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.phone-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.phone-form .ant-form-item-label {
+  font-weight: 500;
+}
+
+.phone-form .ant-input {
+  border-radius: 4px;
+}

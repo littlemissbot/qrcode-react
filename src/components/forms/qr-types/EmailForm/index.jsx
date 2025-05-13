@@ -1,9 +1,10 @@
 import React from "react";
 import { Form, Input, Row, Col } from "antd";
+import "./styles.css";
 
 const EmailForm = () => {
   return (
-    <>
+    <div className="email-form">
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item
@@ -26,7 +27,7 @@ const EmailForm = () => {
       <Form.Item label="Message" name="body">
         <Input.TextArea placeholder="Email Body" rows={4} />
       </Form.Item>
-    </>
+    </div>
   );
 };
 

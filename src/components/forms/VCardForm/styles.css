@@ -1,0 +1,40 @@
+.vcard-form {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.vcard-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.vcard-form .ant-divider {
+  margin: 24px 0;
+}
+
+.vcard-form .ant-space {
+  width: 100%;
+}
+
+.vcard-form .ant-form-item-label {
+  font-weight: 500;
+}
+
+.vcard-form .ant-input,
+.vcard-form .ant-select-selector {
+  border-radius: 4px;
+}
+
+.vcard-form .ant-btn-dashed {
+  margin-top: 8px;
+}
+
+.vcard-form .anticon-minus-circle {
+  color: #ff4d4f;
+  cursor: pointer;
+}
+
+.vcard-form .anticon-minus-circle:hover {
+  color: #ff7875;
+}

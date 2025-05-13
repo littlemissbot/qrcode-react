@@ -1,0 +1,23 @@
+.email-form {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.email-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.email-form .ant-form-item-label {
+  font-weight: 500;
+}
+
+.email-form .ant-input,
+.email-form .ant-input-textarea {
+  border-radius: 4px;
+}
+
+.email-form .ant-row {
+  margin-bottom: 16px;
+}

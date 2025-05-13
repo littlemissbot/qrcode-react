@@ -9,7 +9,7 @@ import {
   PhoneOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
-import "./QRCodeTypeSelector.css";
+import "./styles.css";
 
 const QRCodeTypeSelector = ({ onTypeSelect }) => {
   const qrTypes = [
@@ -58,7 +58,6 @@ const QRCodeTypeSelector = ({ onTypeSelect }) => {
   ];
 
   const handleCardClick = (type) => {
-    console.log("Card clicked:", type); // Debug log
     if (onTypeSelect) {
       onTypeSelect(type);
     }

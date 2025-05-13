@@ -1,11 +1,12 @@
 import React from "react";
 import { Form, Input, Select, Row, Col } from "antd";
+import "./styles.css";
 
 const { Option } = Select;
 
 const WifiForm = () => {
   return (
-    <>
+    <div className="wifi-form">
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item
@@ -54,7 +55,7 @@ const WifiForm = () => {
           </Form.Item>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 
