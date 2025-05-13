@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Button, Spin, Collapse } from "antd";
-import { DownloadOutlined, LoadingOutlined } from "@ant-design/icons";
+import {
+  DownloadOutlined,
+  LoadingOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import "./styles.css";
 
 const { Panel } = Collapse;
 const LoaderTemplate = <LoadingOutlined style={{ fontSize: 32 }} spin />;
 
 const QRCodePreview = ({ dataUrl, loading, onDownload, qrDataString }) => {
+  const [showQRData, setShowQRData] = useState(false);
   return (
     <Card
       className="qr-code-preview-card"
@@ -25,7 +30,14 @@ const QRCodePreview = ({ dataUrl, loading, onDownload, qrDataString }) => {
             style={{ maxWidth: "100%", height: "auto" }}
           />
         )}
-        <div style={{ marginTop: 16 }}>
+        <div
+          style={{
+            marginTop: 16,
+            display: "flex",
+            justifyContent: "center",
+            gap: 8,
+          }}
+        >
           <Button
             type="primary"
             icon={<DownloadOutlined />}
@@ -34,11 +46,18 @@ const QRCodePreview = ({ dataUrl, loading, onDownload, qrDataString }) => {
           >
             Download QR Code
           </Button>
+          {qrDataString && (
+            <Button
+              icon={<InfoCircleOutlined />}
+              onClick={() => setShowQRData((prev) => !prev)}
+              disabled={loading}
+            >
+              {showQRData ? "Hide QR Data" : "Show QR Data"}
+            </Button>
+          )}
         </div>
-      </div>
-      {qrDataString && (
-        <Collapse style={{ marginTop: 24 }}>
-          <Panel header="Show QR Code Data" key="1">
+        {qrDataString && showQRData && (
+          <div style={{ marginTop: 24 }}>
             <pre
               style={{
                 textAlign: "left",
@@ -53,9 +72,9 @@ const QRCodePreview = ({ dataUrl, loading, onDownload, qrDataString }) => {
             >
               {qrDataString}
             </pre>
-          </Panel>
-        </Collapse>
-      )}
+          </div>
+        )}
+      </div>
     </Card>
   );
 };

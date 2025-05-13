@@ -24,6 +24,9 @@ const TypeSelection = ({ onTypeSelect }) => {
           <Title className="display-1" level={1} style={{ margin: "0 0 8px" }}>
             Welcome to QRx!
           </Title>
+          <Title level={4} style={{ margin: "0 0 8px" }}>
+            The QR Experience, Reimagined!!
+          </Title>
           <Paragraph style={{ fontSize: "1.1rem", color: "#555" }}>
             Instantly generate custom QR codes for websites, WiFi, contacts, and
             more. Choose a QR code type to get started!
