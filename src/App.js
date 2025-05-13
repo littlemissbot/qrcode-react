@@ -3,7 +3,17 @@ import QrCode from "./qrcode.png";
 import React, { useState } from "react";
 import QRCode from "qrcode";
 import VCardForm from "./components/VCardForm";
+import WifiForm from "./components/qr-types/WifiForm";
+import EmailForm from "./components/qr-types/EmailForm";
+import SmsForm from "./components/qr-types/SmsForm";
 import { generateVCardString } from "./types/vCard";
+import {
+  generateWifiString,
+  generateEmailString,
+  generateSmsString,
+  generatePhoneString,
+  generateTextString,
+} from "./utils/qrCodeGenerator";
 
 import {
   BarcodeOutlined,
@@ -27,7 +37,9 @@ import {
   Typography,
   ColorPicker,
   Collapse,
+  Divider,
 } from "antd";
+import QRCodeCustomization from "./components/QRCodeCustomization";
 
 const { Header, Footer, Sider, Content } = Layout;
 const { Meta } = Card;
@@ -48,21 +60,55 @@ function App() {
     setLoading(true);
 
     let qrData = values.dataUrl;
-    if (values.qrType === "vcard") {
-      // Ensure phones and emails arrays exist
-      const vCardData = {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        organization: values.organization,
-        jobTitle: values.jobTitle,
-        phones: values.phones || [],
-        emails: values.emails || [],
-        website: values.website,
-        address: values.address,
-        notes: values.notes,
-      };
-      qrData = generateVCardString(vCardData);
+    switch (values.qrType) {
+      case "vcard":
+        qrData = generateVCardString({
+          firstName: values.firstName,
+          lastName: values.lastName,
+          organization: values.organization,
+          jobTitle: values.jobTitle,
+          phones: values.phones || [],
+          emails: values.emails || [],
+          website: values.website,
+          address: values.address,
+          notes: values.notes,
+        });
+        break;
+      case "wifi":
+        qrData = generateWifiString({
+          ssid: values.ssid,
+          password: values.password,
+          encryption: values.encryption,
+          hidden: values.hidden,
+        });
+        break;
+      case "email":
+        qrData = generateEmailString({
+          email: values.email,
+          subject: values.subject,
+          body: values.body,
+        });
+        break;
+      case "sms":
+        qrData = generateSmsString({
+          phone: values.phone,
+          message: values.message,
+        });
+        break;
+      case "phone":
+        qrData = generatePhoneString({
+          phone: values.phone,
+        });
+        break;
+      case "text":
+        qrData = generateTextString({
+          text: values.text,
+        });
+        break;
+      default:
+        qrData = values.dataUrl;
     }
+
     setQrDataString(qrData);
 
     const options = {
@@ -83,6 +129,7 @@ function App() {
       scale: values.optionScale,
       maskPattern: values.optionMaskPattern,
       width: values.optionWidth,
+      errorCorrectionLevel: values.errorCorrectionLevel || "M",
     };
 
     QRCode.toDataURL(qrData, options)
@@ -152,6 +199,7 @@ function App() {
                         optionLightColor: "#fcffe6",
                         optionMaskPattern: 2,
                         optionWidth: 600,
+                        errorCorrectionLevel: "M",
                       }}
                     >
                       <Form.Item
@@ -167,6 +215,11 @@ function App() {
                         <Select size="large">
                           <Option value="url">Website URL</Option>
                           <Option value="vcard">vCard</Option>
+                          <Option value="wifi">WiFi</Option>
+                          <Option value="email">Email</Option>
+                          <Option value="sms">SMS</Option>
+                          <Option value="phone">Phone Number</Option>
+                          <Option value="text">Plain Text</Option>
                         </Select>
                       </Form.Item>
 
@@ -176,102 +229,92 @@ function App() {
                           prevValues.qrType !== currentValues.qrType
                         }
                       >
-                        {({ getFieldValue }) =>
-                          getFieldValue("qrType") === "url" ? (
-                            <Form.Item
-                              label="Website URL"
-                              name="dataUrl"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input a website url!",
-                                },
-                                {
-                                  pattern:
-                                    /^(http(s):\/\/)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g,
-                                  message:
-                                    "Please enter valid url. Note it must be a secure url (https).",
-                                },
-                              ]}
-                            >
-                              <Input placeholder="Website URL" size="large" />
-                            </Form.Item>
-                          ) : (
-                            <VCardForm form={form} />
-                          )
-                        }
+                        {({ getFieldValue }) => {
+                          const qrType = getFieldValue("qrType");
+                          switch (qrType) {
+                            case "url":
+                              return (
+                                <Form.Item
+                                  label="Website URL"
+                                  name="dataUrl"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Please input a website url!",
+                                    },
+                                    {
+                                      pattern:
+                                        /^(http(s):\/\/)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g,
+                                      message:
+                                        "Please enter valid url. Note it must be a secure url (https).",
+                                    },
+                                  ]}
+                                >
+                                  <Input
+                                    placeholder="Website URL"
+                                    size="large"
+                                  />
+                                </Form.Item>
+                              );
+                            case "vcard":
+                              return <VCardForm form={form} />;
+                            case "wifi":
+                              return <WifiForm />;
+                            case "email":
+                              return <EmailForm />;
+                            case "sms":
+                              return <SmsForm />;
+                            case "phone":
+                              return (
+                                <Form.Item
+                                  label="Phone Number"
+                                  name="phone"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Please input phone number!",
+                                    },
+                                    {
+                                      pattern: /^\+?[\d\s-]+$/,
+                                      message:
+                                        "Please enter a valid phone number!",
+                                    },
+                                  ]}
+                                >
+                                  <Input
+                                    placeholder="+1234567890"
+                                    size="large"
+                                  />
+                                </Form.Item>
+                              );
+                            case "text":
+                              return (
+                                <Form.Item
+                                  label="Text"
+                                  name="text"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Please input text!",
+                                    },
+                                  ]}
+                                >
+                                  <Input.TextArea
+                                    placeholder="Enter your text"
+                                    rows={4}
+                                  />
+                                </Form.Item>
+                              );
+                            default:
+                              return null;
+                          }
+                        }}
                       </Form.Item>
 
-                      <Form.Item label="Image Type" name="optionImageType">
-                        <Select size="large">
-                          <Option value="image/png">PNG</Option>
-                          <Option value="image/jpeg">JPEG</Option>
-                          <Option value="image/webp">WebP</Option>
-                        </Select>
-                      </Form.Item>
-
-                      <Form.Item label="Margin" name="optionMargin">
-                        <Slider min={1} max={20} step={1} />
-                      </Form.Item>
-
-                      <Form.Item label="Quality" name="optionQuality">
-                        <Slider min={0} max={1} step={0.1} />
-                      </Form.Item>
-
-                      <br />
-                      <Row>
-                        <Col flex={2}>
-                          <Form.Item
-                            label="QR Code Color (HEX)"
-                            name="optionDarkColor"
-                            style={{ paddingRight: "15px" }}
-                          >
-                            <ColorPicker showText />
-                          </Form.Item>
-                        </Col>
-                        <Col flex={2}>
-                          <Form.Item
-                            label="Background Color (HEX)"
-                            name="optionLightColor"
-                            style={{ paddingLeft: "15px" }}
-                          >
-                            <ColorPicker showText />
-                          </Form.Item>
-                        </Col>
-                      </Row>
-
-                      <Row>
-                        <Col flex={2}>
-                          <Form.Item
-                            label="Mask Pattern"
-                            name="optionMaskPattern"
-                            style={{ paddingRight: "15px" }}
-                          >
-                            <InputNumber
-                              min={0}
-                              max={7}
-                              placeholder="Mask Pattern"
-                              size="large"
-                              style={{ width: "100%" }}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col flex={2}>
-                          <Form.Item
-                            label="Width (px)"
-                            name="optionWidth"
-                            style={{ paddingLeft: "15px" }}
-                          >
-                            <InputNumber
-                              min={200}
-                              max={1200}
-                              placeholder="Width"
-                              size="large"
-                              style={{ width: "100%" }}
-                            />
-                          </Form.Item>
-                        </Col>
-                      </Row>
+                      <Divider orientation="left">
+                        QR Code Customization
+                      </Divider>
+                      <QRCodeCustomization />
 
                       <Form.Item>
                         <Button
