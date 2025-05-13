@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Card, Row, Col, Radio } from "antd";
+import { Card, Row, Col } from "antd";
 import {
   LinkOutlined,
   UserOutlined,
@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 import "./QRCodeTypeSelector.css";
 
-const QRCodeTypeSelector = () => {
+const QRCodeTypeSelector = ({ onTypeSelect }) => {
   const qrTypes = [
     {
       value: "url",
@@ -57,56 +57,48 @@ const QRCodeTypeSelector = () => {
     },
   ];
 
+  const handleCardClick = (type) => {
+    console.log("Card clicked:", type); // Debug log
+    if (onTypeSelect) {
+      onTypeSelect(type);
+    }
+  };
+
   return (
-    <Form.Item
-      label="QR Code Type"
-      name="qrType"
-      rules={[
-        {
-          required: true,
-          message: "Please select QR code type!",
-        },
-      ]}
-    >
-      <Radio.Group className="qr-type-selector">
-        <Row gutter={[16, 16]}>
-          {qrTypes.map((type) => (
-            <Col xs={24} sm={12} md={8} key={type.value}>
-              <Radio.Button
-                value={type.value}
-                className="qr-type-radio"
-                style={{ width: "100%", height: "100%" }}
+    <div className="qr-type-selector">
+      <Row gutter={[16, 16]}>
+        {qrTypes.map((type) => (
+          <Col xs={24} sm={12} md={8} key={type.value}>
+            <Card
+              hoverable
+              className="qr-type-card"
+              onClick={() => handleCardClick(type.value)}
+              style={{
+                textAlign: "center",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+            >
+              <div style={{ marginBottom: "8px" }}>{type.icon}</div>
+              <div style={{ fontWeight: "bold" }}>{type.label}</div>
+              <div
+                style={{
+                  fontSize: "12px",
+                  color: "rgba(0, 0, 0, 0.45)",
+                  marginTop: "4px",
+                }}
               >
-                <Card
-                  hoverable
-                  className="qr-type-card"
-                  style={{
-                    textAlign: "center",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <div style={{ marginBottom: "8px" }}>{type.icon}</div>
-                  <div style={{ fontWeight: "bold" }}>{type.label}</div>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      color: "rgba(0, 0, 0, 0.45)",
-                      marginTop: "4px",
-                    }}
-                  >
-                    {type.description}
-                  </div>
-                </Card>
-              </Radio.Button>
-            </Col>
-          ))}
-        </Row>
-      </Radio.Group>
-    </Form.Item>
+                {type.description}
+              </div>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </div>
   );
 };
 
