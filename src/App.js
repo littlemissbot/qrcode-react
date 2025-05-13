@@ -50,9 +50,10 @@ function App() {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#a0d911",
+            colorPrimary: "#FFF100",
             borderRadius: 8,
-            colorBgContainer: "#fcffe6",
+            colorBgContainer: "#fffde5",
+            colorTextLightSolid: "#333",
           },
           algorithm: theme.lightAlgorithm,
         }}
@@ -67,7 +68,7 @@ function App() {
               alt="QR Code Logo"
               style={{
                 height: 40,
-                marginRight: 16,
+                marginRight: 10,
                 background: "#fff",
                 borderRadius: 8,
                 padding: 4,
@@ -89,7 +90,7 @@ function App() {
           <Footer
             style={{
               textAlign: "center",
-              background: "#fcffe6",
+              background: "#fffde5",
               color: "#888",
             }}
           >
