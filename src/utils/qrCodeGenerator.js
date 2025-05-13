@@ -1,3 +1,5 @@
+import QRCode from "qrcode";
+
 export const generateWifiString = (data) => {
   const { ssid, password, encryption, hidden } = data;
   return `WIFI:S:${ssid};T:${encryption};P:${password};H:${hidden};`;
@@ -37,3 +39,45 @@ export const generatePhoneString = (data) => {
 export const generateTextString = (data) => {
   return data.text;
 };
+
+export const generateQRCode = async (qrData, options) => {
+  const qrOptions = {
+    version: options.optionVersion,
+    type: options.optionImageType,
+    quality: options.optionQuality,
+    margin: options.optionMargin,
+    color: {
+      dark:
+        typeof options.optionDarkColor === "string"
+          ? options.optionDarkColor
+          : options.optionDarkColor.toHexString(),
+      light:
+        typeof options.optionLightColor === "string"
+          ? options.optionLightColor
+          : options.optionLightColor.toHexString(),
+    },
+    scale: options.optionScale,
+    maskPattern: options.optionMaskPattern,
+    width: options.optionWidth,
+    errorCorrectionLevel: options.errorCorrectionLevel || "M",
+  };
+
+  try {
+    const url = await QRCode.toDataURL(qrData, qrOptions);
+    return url;
+  } catch (error) {
+    console.error("Error generating QR code:", error);
+    throw error;
+  }
+};
+
+export const getDefaultQRCodeOptions = () => ({
+  optionImageType: "image/png",
+  optionMargin: 2,
+  optionQuality: 1,
+  optionDarkColor: "#a0d911",
+  optionLightColor: "#fcffe6",
+  optionMaskPattern: 2,
+  optionWidth: 600,
+  errorCorrectionLevel: "M",
+});
