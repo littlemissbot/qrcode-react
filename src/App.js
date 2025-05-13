@@ -53,7 +53,6 @@ function App() {
             colorPrimary: "#FFF100",
             borderRadius: 8,
             colorBgContainer: "#fffde5",
-            colorTextLightSolid: "#333",
           },
           algorithm: theme.lightAlgorithm,
         }}

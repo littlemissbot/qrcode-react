@@ -16,7 +16,7 @@ const { Option } = Select;
 
 const QRCodeCustomization = () => {
   return (
-    <div className="qr-code-customization">
+    <div className="qr-code-customization" style={{ marginTop: 32 }}>
       <Form.Item
         label={
           <Tooltip title="Choose the image format for your QR code. PNG is recommended for best quality, JPEG for smaller file size, and WebP for modern web browsers.">

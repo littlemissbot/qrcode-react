@@ -48,3 +48,7 @@
   color: #909090;
   margin: 0;
 }
+
+.ant-btn-primary {
+  color: #333 !important;
+}

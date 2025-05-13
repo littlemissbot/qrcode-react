@@ -217,7 +217,7 @@ const QRCodeForm = ({ qrType, onBack }) => {
 
               <QRCodeCustomization />
 
-              <Form.Item>
+              <Form.Item style={{ marginTop: 32 }}>
                 <Button
                   type="primary"
                   htmlType="submit"
