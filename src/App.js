@@ -17,6 +17,9 @@ import VCardForm from "./components/VCardForm";
 import WifiForm from "./components/qr-types/WifiForm";
 import EmailForm from "./components/qr-types/EmailForm";
 import SmsForm from "./components/qr-types/SmsForm";
+import UrlForm from "./components/qr-types/UrlForm";
+import PhoneForm from "./components/qr-types/PhoneForm";
+import TextForm from "./components/qr-types/TextForm";
 import QRCodePreview from "./components/QRCodePreview";
 import QRCodeTypeSelector from "./components/QRCodeTypeSelector";
 import QRCodeCustomization from "./components/QRCodeCustomization";
@@ -205,29 +208,7 @@ function App() {
                         const qrType = getFieldValue("qrType");
                         switch (qrType) {
                           case "url":
-                            return (
-                              <Form.Item
-                                label="Website URL"
-                                name="dataUrl"
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "Please input a website url!",
-                                  },
-                                  {
-                                    pattern:
-                                      /^(http(s):\/\/)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g,
-                                    message:
-                                      "Please enter valid url. Note it must be a secure url (https).",
-                                  },
-                                ]}
-                              >
-                                <Input
-                                  size="large"
-                                  placeholder="https://example.com"
-                                />
-                              </Form.Item>
-                            );
+                            return <UrlForm />;
                           case "vcard":
                             return <VCardForm />;
                           case "wifi":
@@ -237,38 +218,9 @@ function App() {
                           case "sms":
                             return <SmsForm />;
                           case "phone":
-                            return (
-                              <Form.Item
-                                label="Phone Number"
-                                name="phone"
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "Please input phone number!",
-                                  },
-                                ]}
-                              >
-                                <Input size="large" placeholder="+1234567890" />
-                              </Form.Item>
-                            );
+                            return <PhoneForm />;
                           case "text":
-                            return (
-                              <Form.Item
-                                label="Text"
-                                name="text"
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "Please input text!",
-                                  },
-                                ]}
-                              >
-                                <Input.TextArea
-                                  size="large"
-                                  placeholder="Enter your text here"
-                                />
-                              </Form.Item>
-                            );
+                            return <TextForm />;
                           default:
                             return null;
                         }
