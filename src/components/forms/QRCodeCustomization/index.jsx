@@ -8,6 +8,7 @@ import {
   Select,
   InputNumber,
   Tooltip,
+  Card,
 } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import "./styles.css";
@@ -16,7 +17,7 @@ const { Option } = Select;
 
 const QRCodeCustomization = () => {
   return (
-    <div className="qr-code-customization" style={{ marginTop: 32 }}>
+    <Card className="qr-code-customization" style={{ marginTop: 32 }}>
       <Form.Item
         label={
           <Tooltip title="Choose the image format for your QR code. PNG is recommended for best quality, JPEG for smaller file size, and WebP for modern web browsers.">
@@ -143,7 +144,7 @@ const QRCodeCustomization = () => {
           <Option value="H">High (30%)</Option>
         </Select>
       </Form.Item>
-    </div>
+    </Card>
   );
 };
 

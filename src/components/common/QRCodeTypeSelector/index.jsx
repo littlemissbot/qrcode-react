@@ -80,6 +80,7 @@ const QRCodeTypeSelector = ({ onTypeSelect }) => {
                 justifyContent: "center",
                 alignItems: "center",
                 cursor: "pointer",
+                backgroundColor: "#ebe9ee",
               }}
             >
               <div style={{ marginBottom: "8px" }}>{type.icon}</div>

@@ -58,9 +58,13 @@ function App() {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#FFF100",
+            colorPrimary: "#392B58",
             borderRadius: 8,
-            colorBgContainer: "#fffde5",
+          },
+          components: {
+            Layout: {
+              bodyBg: "#ffffff",
+            },
           },
           algorithm: theme.lightAlgorithm,
         }}
@@ -100,7 +104,7 @@ function App() {
           <Footer
             style={{
               textAlign: "center",
-              background: "#fffde5",
+              background: "#ebe9ee",
               color: "#888",
             }}
           >

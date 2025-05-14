@@ -5,7 +5,7 @@
 }
 .App .header {
   text-align: left;
-  background-color: #fff100;
+  background-color: #392b58;
   color: #fff;
 }
 .App .header .logo {
@@ -14,7 +14,7 @@
 }
 .App .header .projecttitle {
   margin: 0;
-  color: #ffb500;
+  color: #ffffff;
   line-height: 1.2;
 
   font-family: "Press Start 2P", system-ui;
@@ -47,7 +47,7 @@
   font-style: normal;
   font-optical-sizing: auto;
   line-height: 1.5;
-  color: #ffb500;
+  color: #392b58;
 }
 .App .footer {
   background-color: #fff;
@@ -55,8 +55,4 @@
 .App .footer p {
   color: #909090;
   margin: 0;
-}
-
-.ant-btn-primary {
-  color: #333 !important;
 }
