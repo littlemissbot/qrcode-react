@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://qrx.samita.in" />
     <meta
       name="description"
       content="The QR Experience, Reimagined. Generate QR codes instantly with our free, easy-to-use QR Code Generator. Create QR codes for URLs, text, contact information, and more."
@@ -23,6 +25,9 @@
       content="The QR Experience, Reimagined. Generate QR codes instantly with our free, easy-to-use QR Code Generator. Create QR codes for URLs, text, contact information, and more."
     />
     <meta property="og:image" content="%PUBLIC_URL%/logo192.png" />
+    <meta property="og:image:width" content="192" />
+    <meta property="og:image:height" content="192" />
+    <meta property="og:image:alt" content="QRx Logo" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -35,6 +40,7 @@
       content="QRx, Samita, Samita Mondal, The QR Experience, Reimagined. Generate QR codes instantly with our free, easy-to-use QR Code Generator. Create QR codes for URLs, text, contact information, and more."
     />
     <meta property="twitter:image" content="%PUBLIC_URL%/logo192.png" />
+    <meta property="twitter:image:alt" content="QRx Logo" />
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -66,6 +72,24 @@
       gtag("js", new Date());
 
       gtag("config", "G-R4QFY97Z0W");
+    </script>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "QRx",
+        "description": "The QR Experience, Reimagined. Generate QR codes instantly with our free, easy-to-use QR Code Generator.",
+        "url": "https://qrx.app",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
     </script>
   </head>
   <body>
