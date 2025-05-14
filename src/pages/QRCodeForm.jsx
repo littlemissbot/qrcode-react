@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button, Typography, Space } from "antd";
 import { BarcodeOutlined, ArrowLeftOutlined } from "@ant-design/icons";
-import VCardForm from "../components/forms/VCardForm";
+import VCardForm from "../components/forms/qr-types/VCardForm";
 import WifiForm from "../components/forms/qr-types/WifiForm";
 import EmailForm from "../components/forms/qr-types/EmailForm";
 import SmsForm from "../components/forms/qr-types/SmsForm";

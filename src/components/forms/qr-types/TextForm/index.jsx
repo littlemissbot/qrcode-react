@@ -1,10 +1,10 @@
 import React from "react";
-import { Form, Input } from "antd";
+import { Form, Input, Card } from "antd";
 import "./styles.css";
 
 const TextForm = () => {
   return (
-    <div className="text-form">
+    <Card className="text-form" style={{ marginTop: 32 }}>
       <Form.Item
         label="Text"
         name="text"
@@ -21,7 +21,7 @@ const TextForm = () => {
           rows={4}
         />
       </Form.Item>
-    </div>
+    </Card>
   );
 };
 

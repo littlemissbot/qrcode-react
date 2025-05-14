@@ -9,6 +9,7 @@ import {
   Col,
   Divider,
   Typography,
+  Card,
 } from "antd";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import "./styles.css";
@@ -18,7 +19,7 @@ const { Title } = Typography;
 
 const VCardForm = ({ form }) => {
   return (
-    <div className="vcard-form">
+    <Card className="vcard-form" style={{ marginTop: 32 }}>
       <Title level={5} style={{ marginTop: 0 }}>
         Basic Info
       </Title>
@@ -192,7 +193,7 @@ const VCardForm = ({ form }) => {
       <Form.Item label="Notes" name="notes">
         <Input.TextArea placeholder="Additional Notes" />
       </Form.Item>
-    </div>
+    </Card>
   );
 };
 

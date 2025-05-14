@@ -1,10 +1,10 @@
 import React from "react";
-import { Form, Input } from "antd";
+import { Form, Input, Card } from "antd";
 import "./styles.css";
 
 const UrlForm = () => {
   return (
-    <div className="url-form">
+    <Card className="url-form" style={{ marginTop: 32 }}>
       <Form.Item
         label="Website URL"
         name="dataUrl"
@@ -23,7 +23,7 @@ const UrlForm = () => {
       >
         <Input size="large" placeholder="https://example.com" />
       </Form.Item>
-    </div>
+    </Card>
   );
 };
 

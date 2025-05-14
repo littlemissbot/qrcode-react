@@ -1,10 +1,10 @@
 import React from "react";
-import { Form, Input, Row, Col } from "antd";
+import { Form, Input, Row, Col, Card } from "antd";
 import "./styles.css";
 
 const SmsForm = () => {
   return (
-    <div className="sms-form">
+    <Card className="sms-form" style={{ marginTop: 32 }}>
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item
@@ -27,7 +27,7 @@ const SmsForm = () => {
           </Form.Item>
         </Col>
       </Row>
-    </div>
+    </Card>
   );
 };
 

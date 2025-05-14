@@ -1,10 +1,10 @@
 import React from "react";
-import { Form, Input } from "antd";
+import { Form, Input, Card } from "antd";
 import "./styles.css";
 
 const PhoneForm = () => {
   return (
-    <div className="phone-form">
+    <Card className="phone-form" style={{ marginTop: 32 }}>
       <Form.Item
         label="Phone Number"
         name="phone"
@@ -21,7 +21,7 @@ const PhoneForm = () => {
       >
         <Input size="large" placeholder="+1234567890" />
       </Form.Item>
-    </div>
+    </Card>
   );
 };
 

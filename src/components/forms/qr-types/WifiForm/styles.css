@@ -1,12 +1,14 @@
 .wifi-form {
-  padding: 16px;
-  background: #fff;
-  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.wifi-form .ant-card-body {
+  padding: 24px;
 }
 
 .wifi-form .ant-form-item {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .wifi-form .ant-form-item-label {
@@ -14,7 +16,6 @@
 }
 
 .wifi-form .ant-input,
-.wifi-form .ant-input-password,
 .wifi-form .ant-select-selector {
   border-radius: 4px;
 }
