@@ -6,7 +6,7 @@ const { Option } = Select;
 
 const WifiForm = () => {
   return (
-    <Card className="wifi-form" style={{ marginTop: 32 }}>
+    <Card className="wifi-form">
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item

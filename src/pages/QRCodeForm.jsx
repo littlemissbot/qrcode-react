@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Button, Typography, Space } from "antd";
 import { BarcodeOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import VCardForm from "../components/forms/qr-types/VCardForm";
@@ -42,6 +42,13 @@ const QRCodeForm = ({ qrType, onBack }) => {
   const [loading, setLoading] = useState(false);
   const [qrDataString, setQrDataString] = useState("");
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [qrType]);
 
   const generateQRCodeFromValues = async (values) => {
     if (!values) return;

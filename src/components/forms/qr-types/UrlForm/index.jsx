@@ -4,7 +4,7 @@ import "./styles.css";
 
 const UrlForm = () => {
   return (
-    <Card className="url-form" style={{ marginTop: 32 }}>
+    <Card className="url-form">
       <Form.Item
         label="Website URL"
         name="dataUrl"

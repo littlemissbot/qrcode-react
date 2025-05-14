@@ -4,7 +4,7 @@ import "./styles.css";
 
 const SmsForm = () => {
   return (
-    <Card className="sms-form" style={{ marginTop: 32 }}>
+    <Card className="sms-form">
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item

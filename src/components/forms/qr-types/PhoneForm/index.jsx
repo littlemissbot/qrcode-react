@@ -4,7 +4,7 @@ import "./styles.css";
 
 const PhoneForm = () => {
   return (
-    <Card className="phone-form" style={{ marginTop: 32 }}>
+    <Card className="phone-form">
       <Form.Item
         label="Phone Number"
         name="phone"

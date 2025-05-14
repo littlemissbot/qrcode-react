@@ -4,7 +4,7 @@ import "./styles.css";
 
 const EmailForm = () => {
   return (
-    <Card className="email-form" style={{ marginTop: 32 }}>
+    <Card className="email-form">
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item

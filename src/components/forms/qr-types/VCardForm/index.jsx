@@ -19,7 +19,7 @@ const { Title } = Typography;
 
 const VCardForm = ({ form }) => {
   return (
-    <Card className="vcard-form" style={{ marginTop: 32 }}>
+    <Card className="vcard-form">
       <Title level={5} style={{ marginTop: 0 }}>
         Basic Info
       </Title>

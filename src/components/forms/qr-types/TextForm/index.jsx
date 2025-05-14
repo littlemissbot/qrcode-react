@@ -4,7 +4,7 @@ import "./styles.css";
 
 const TextForm = () => {
   return (
-    <Card className="text-form" style={{ marginTop: 32 }}>
+    <Card className="text-form">
       <Form.Item
         label="Text"
         name="text"
