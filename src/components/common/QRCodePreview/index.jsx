@@ -7,7 +7,6 @@ import {
 } from "@ant-design/icons";
 import "./styles.css";
 
-const { Panel } = Collapse;
 const LoaderTemplate = <LoadingOutlined style={{ fontSize: 32 }} spin />;
 
 const QRCodePreview = ({ dataUrl, loading, onDownload, qrDataString }) => {
