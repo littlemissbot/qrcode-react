@@ -27,6 +27,7 @@ const QRCodeCustomization = () => {
         name="optionImageType"
       >
         <Select size="large">
+          <Option value="image/svg+xml">SVG</Option>
           <Option value="image/png">PNG</Option>
           <Option value="image/jpeg">JPEG</Option>
           <Option value="image/webp">WebP</Option>
