@@ -39,6 +39,7 @@ const getTypeTitle = (type) => {
 
 const QRCodeForm = ({ qrType, onBack }) => {
   const [dataUrl, setDataUrl] = useState(QrCode);
+  const [dataMime, setDataMime] = useState("image/png");
   const [loading, setLoading] = useState(false);
   const [qrDataString, setQrDataString] = useState("");
   const [form] = Form.useForm();
@@ -108,8 +109,9 @@ const QRCodeForm = ({ qrType, onBack }) => {
     setQrDataString(qrData);
 
     try {
-      const url = await generateQRCode(qrData, values);
-      setDataUrl(url);
+      const result = await generateQRCode(qrData, values);
+      setDataUrl(result.url);
+      setDataMime(result.mime);
     } catch (error) {
       console.error(error);
     } finally {
@@ -159,8 +161,15 @@ const QRCodeForm = ({ qrType, onBack }) => {
   };
 
   const onDownloadImage = (uri) => {
+    const mimeToExt = {
+      "image/png": ".png",
+      "image/jpeg": ".jpg",
+      "image/webp": ".webp",
+      "image/svg+xml": ".svg",
+    };
+    const ext = mimeToExt[dataMime] || "";
     const link = document.createElement("a");
-    link.download = "qrcode";
+    link.download = `qrcode${ext}`;
     link.href = uri;
     document.body.appendChild(link);
     link.click();

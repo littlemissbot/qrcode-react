@@ -63,8 +63,23 @@ export const generateQRCode = async (qrData, options) => {
   };
 
   try {
-    const url = await QRCode.toDataURL(qrData, qrOptions);
-    return url;
+    // Handle SVG separately: qrcode library uses toString with type: 'svg'
+    if (options.optionImageType === "image/svg+xml") {
+      const svgString = await QRCode.toString(qrData, {
+        ...qrOptions,
+        type: "svg",
+      });
+
+      // Build a data URL for the SVG so it can render in an <img>
+      const svgDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
+        svgString
+      )}`;
+      return { url: svgDataUrl, mime: "image/svg+xml" };
+    }
+
+    // Raster formats (png, jpeg, webp)
+    const dataUrl = await QRCode.toDataURL(qrData, qrOptions);
+    return { url: dataUrl, mime: options.optionImageType || "image/png" };
   } catch (error) {
     console.error("Error generating QR code:", error);
     throw error;
