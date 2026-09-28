@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 npm ci                                   # install (lockfile present)
 npm start                                # dev server on http://localhost:3000
-npm run build                            # production build into build/ (compiles with warnings)
+npm run build                            # production build into build/
 CI=true npm run build                    # what Docker/CI effectively do: ESLint warnings become errors
 npx eslint src --ext .js,.jsx            # lint (config is the CRA "react-app" preset in package.json)
 CI=true npx react-scripts test --watchAll=false            # run all tests once, non-interactive
@@ -20,8 +20,8 @@ npx react-scripts test -t "pattern"      # run tests whose name matches, in watc
 ```
 
 Notes on current state (verified):
-- `CI=true npm run build` currently fails on three pre-existing lint warnings (an unused `Collapse` import in `QRCodePreview` and two `no-useless-escape` hits in `UrlForm`). Any new warning will also break a CI build, so lint before pushing.
-- The only test, `src/App.test.js`, is the untouched CRA boilerplate and fails: antd's responsive grid calls `window.matchMedia`, which jsdom lacks, and the test asserts on "learn react" text that does not exist. Any new component test that renders antd `Row`/`Col` must mock `window.matchMedia` (e.g. in `src/setupTests.js`).
+- `CI=true npm run build` treats every ESLint warning as an error, and Docker/CI runners set `CI`. `npm run build` and `CI=true npm run build` both compile cleanly today, so keep lint at zero warnings before pushing.
+- `src/setupTests.js` mocks `window.matchMedia`, because antd's responsive grid (`Row`/`Col`) calls it on mount and jsdom does not implement it. Any test that renders antd layout components relies on that mock.
 - `react-router-dom` is in `package.json` but is not used anywhere; routing is done by hand (see below).
 
 ## Architecture
