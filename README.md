@@ -4,7 +4,8 @@ A modern, user-friendly web application for generating customizable QR codes. Bu
 
 ## Features
 
-- Generate QR codes from website URLs
+- Generate QR codes for website URLs, vCards, WiFi, email, SMS, phone numbers, plain text, UPI payments, WhatsApp chats and Google Maps locations
+- Every generator has its own indexable page (for example `/wifi-qr-code-generator`) with prerendered HTML, its own meta tags and FAQ structured data
 - Customize QR code appearance:
   - Multiple image formats (PNG, JPEG, WebP)
   - Adjustable margin size
@@ -15,13 +16,15 @@ A modern, user-friendly web application for generating customizable QR codes. Bu
   - Adjustable width
 - Download generated QR codes
 - URL validation for secure (https) links
+- Fully client-side: nothing you enter is uploaded anywhere
 - Modern, responsive UI using Ant Design
 - Real-time QR code preview
 
 ## Prerequisites
 
-- Node.js (version 14 or higher)
+- Node.js (version 18 or higher)
 - npm (comes with Node.js)
+- Chromium, for the prerender step of `npm run build` (the Docker image installs it; locally, point `PRERENDER_CHROMIUM` at any Chrome/Chromium binary or set `SKIP_PRERENDER=1`)
 - Docker and Docker Compose (for containerized deployment)
 
 ## Installation
@@ -67,8 +70,9 @@ The production application will be available at [http://localhost](http://localh
 
 ## Usage
 
-1. Enter a valid HTTPS URL in the input field
-2. Customize the QR code using the available options:
+1. Pick a QR code type on the home page, or open its page directly (`/upi-qr-code-generator`, `/wifi-qr-code-generator`, ...)
+2. Fill in the fields for that type. The preview updates as you type
+3. Customize the QR code using the available options:
    - Select image type (PNG, JPEG, WebP)
    - Adjust margin using the slider
    - Set quality using the slider
@@ -76,8 +80,12 @@ The production application will be available at [http://localhost](http://localh
    - Choose background color using the color picker
    - Set mask pattern (0-7)
    - Adjust width (200-1200px)
-3. Click the generate button to create the QR code
-4. Download the generated QR code using the download button
+4. Click the generate button to create the QR code
+5. Download the generated QR code using the download button
+
+## Adding a QR code type
+
+All types are defined in `src/qrTypes/registry.mjs` (slug, labels, payload builder, SEO copy) and wired to a form component and icon in `src/qrTypes/index.js`. Adding an entry there plus a form under `src/components/forms/qr-types/` gives you a new page, a home-page card, a sitemap entry and a prerendered HTML file with no other changes.
 
 ## Technologies Used
 
@@ -90,7 +98,9 @@ The production application will be available at [http://localhost](http://localh
 
 - `npm start` - Runs the app in development mode
 - `npm test` - Launches the test runner
-- `npm run build` - Builds the app for production
+- `npm run lint` - Lints `src/` and `scripts/`
+- `npm run build` - Builds the app for production, then prerenders every route to static HTML and writes `build/sitemap.xml`
+- `npm run prerender` / `npm run sitemap` - Run those two post-build steps on their own
 - `npm run eject` - Ejects from Create React App
 
 ## Contributing

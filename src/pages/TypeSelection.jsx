@@ -1,14 +1,21 @@
 import React from "react";
 import { Typography } from "antd";
 import QRCodeTypeSelector from "../components/common/QRCodeTypeSelector";
-import BannerImage from "../banner-image.png"; // Adjust path if needed
+import useSeo from "../hooks/useSeo";
+import { homeSeo } from "../qrTypes";
+import BannerImage from "../banner-image.png";
 
 const { Title, Paragraph } = Typography;
 
-const TypeSelection = ({ onTypeSelect }) => {
+const TypeSelection = () => {
+  useSeo({
+    title: homeSeo.title,
+    description: homeSeo.description,
+    path: "/",
+  });
+
   return (
     <div style={{ maxWidth: "900px", margin: "0 auto", padding: "24px" }}>
-      {/* Flex container for text and image */}
       <div
         style={{
           display: "flex",
@@ -19,20 +26,20 @@ const TypeSelection = ({ onTypeSelect }) => {
           flexWrap: "wrap",
         }}
       >
-        {/* Text Section */}
         <div style={{ flex: 1, minWidth: 260 }}>
           <Title className="display-1" level={1} style={{ margin: "0 0 8px" }}>
             Welcome to QRx!
           </Title>
-          <Title level={4} style={{ margin: "0 0 8px" }}>
+          <Title level={2} style={{ margin: "0 0 8px", fontSize: "1.25rem" }}>
             The QR Experience, Reimagined!!
           </Title>
           <Paragraph style={{ fontSize: "1.1rem", color: "#555" }}>
-            Instantly generate custom QR codes for websites, WiFi, contacts, and
-            more. Choose a QR code type to get started!
+            Instantly generate custom QR codes for websites, WiFi, UPI
+            payments, WhatsApp, contacts and more. Everything runs in your
+            browser, nothing is uploaded, and there is no sign-up. Choose a QR
+            code type to get started!
           </Paragraph>
         </div>
-        {/* Image Section */}
         <div style={{ flex: 1, textAlign: "center", minWidth: 420 }}>
           <img
             src={BannerImage}
@@ -42,19 +49,22 @@ const TypeSelection = ({ onTypeSelect }) => {
               maxWidth: "100%",
               marginBottom: "0",
               borderRadius: "16px",
-              // boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
             }}
           />
         </div>
       </div>
-      {/* QR Type Selection */}
       <Title
-        level={4}
-        style={{ textAlign: "center", marginBottom: "32px", marginTop: "64px" }}
+        level={2}
+        style={{
+          textAlign: "center",
+          marginBottom: "32px",
+          marginTop: "64px",
+          fontSize: "1.25rem",
+        }}
       >
         Choose QR Code Type
       </Title>
-      <QRCodeTypeSelector onTypeSelect={onTypeSelect} />
+      <QRCodeTypeSelector />
     </div>
   );
 };

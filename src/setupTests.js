@@ -19,3 +19,6 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: () => false,
   }),
 });
+
+// jsdom does not implement scrolling; the form page calls it on mount.
+window.scrollTo = () => {};

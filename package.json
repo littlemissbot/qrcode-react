@@ -18,7 +18,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "node scripts/prerender.mjs && node scripts/generate-sitemap.mjs",
+    "prerender": "node scripts/prerender.mjs",
+    "sitemap": "node scripts/generate-sitemap.mjs",
     "test": "react-scripts test",
+    "lint": "eslint src scripts --ext .js,.jsx,.mjs",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -38,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "playwright-core": "^1.56.1"
   }
 }
