@@ -1,6 +1,9 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
+Disallow: /login
+Disallow: /dashboard
+Disallow: /r/
 
 # Sitemap
 Sitemap: https://qrx.samita.in/sitemap.xml

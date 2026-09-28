@@ -1,0 +1,19 @@
+name = "qrx-redirect"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# Public, non-secret configuration. Secrets are set with:
+#   npx wrangler secret put SUPABASE_URL
+#   npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+[vars]
+SITE_URL = "https://qrx.samita.in"
+
+# Serve the Worker on the main site's /r/* path once the domain is on
+# Cloudflare. Until then it is reachable at https://qrx-redirect.<account>.workers.dev
+# and REACT_APP_REDIRECT_BASE should point there.
+# [[routes]]
+# pattern = "qrx.samita.in/r/*"
+# zone_name = "samita.in"
+
+[observability]
+enabled = true

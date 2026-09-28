@@ -1,111 +1,56 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Form, Row, Col, Button, Typography, Space } from "antd";
 import { BarcodeOutlined, ArrowLeftOutlined } from "@ant-design/icons";
-import VCardForm from "../components/forms/qr-types/VCardForm";
-import WifiForm from "../components/forms/qr-types/WifiForm";
-import EmailForm from "../components/forms/qr-types/EmailForm";
-import SmsForm from "../components/forms/qr-types/SmsForm";
-import UrlForm from "../components/forms/qr-types/UrlForm";
-import PhoneForm from "../components/forms/qr-types/PhoneForm";
-import TextForm from "../components/forms/qr-types/TextForm";
 import QRCodePreview from "../components/common/QRCodePreview";
+import SeoContent from "../components/common/SeoContent";
+import DynamicCodePanel from "../components/common/DynamicCodePanel";
 import QRCodeCustomization from "../components/forms/QRCodeCustomization";
-import { generateVCardString } from "../types/vCard";
+import useSeo from "../hooks/useSeo";
+import { pathForType } from "../qrTypes";
 import {
-  generateWifiString,
-  generateEmailString,
-  generateSmsString,
-  generatePhoneString,
-  generateTextString,
   generateQRCode,
   getDefaultQRCodeOptions,
 } from "../utils/qrCodeGenerator";
 import QrCode from "../qrcode.png";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
-const getTypeTitle = (type) => {
-  const titles = {
-    url: "Website URL QR Code",
-    vcard: "vCard QR Code",
-    wifi: "WiFi QR Code",
-    email: "Email QR Code",
-    sms: "SMS QR Code",
-    phone: "Phone QR Code",
-    text: "Text QR Code",
-  };
-  return titles[type] || "QR Code Generator";
-};
+const faqJsonLd = (type) => ({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: type.seo.faq.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+});
 
-const QRCodeForm = ({ qrType, onBack }) => {
+const QRCodeForm = ({ type }) => {
   const [dataUrl, setDataUrl] = useState(QrCode);
   const [dataMime, setDataMime] = useState("image/png");
   const [loading, setLoading] = useState(false);
   const [qrDataString, setQrDataString] = useState("");
+  const [ready, setReady] = useState(false);
   const [form] = Form.useForm();
+  const TypeForm = type.Form;
+
+  useSeo({
+    title: type.seo.title,
+    description: type.seo.description,
+    path: pathForType(type),
+    jsonLd: faqJsonLd(type),
+  });
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [qrType]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [type.key]);
 
   const generateQRCodeFromValues = async (values) => {
     if (!values) return;
 
     setLoading(true);
-    let qrData = values.dataUrl;
-
-    switch (qrType) {
-      case "vcard":
-        qrData = generateVCardString({
-          firstName: values.firstName,
-          lastName: values.lastName,
-          organization: values.organization,
-          jobTitle: values.jobTitle,
-          phones: values.phones || [],
-          emails: values.emails || [],
-          website: values.website,
-          address: values.address,
-          notes: values.notes,
-        });
-        break;
-      case "wifi":
-        qrData = generateWifiString({
-          ssid: values.ssid,
-          password: values.password,
-          encryption: values.encryption,
-          hidden: values.hidden,
-        });
-        break;
-      case "email":
-        qrData = generateEmailString({
-          email: values.email,
-          subject: values.subject,
-          body: values.body,
-        });
-        break;
-      case "sms":
-        qrData = generateSmsString({
-          phone: values.phone,
-          message: values.message,
-        });
-        break;
-      case "phone":
-        qrData = generatePhoneString({
-          phone: values.phone,
-        });
-        break;
-      case "text":
-        qrData = generateTextString({
-          text: values.text,
-        });
-        break;
-      default:
-        qrData = values.dataUrl;
-    }
-
+    const qrData = type.buildPayload(values);
     setQrDataString(qrData);
 
     try {
@@ -123,39 +68,11 @@ const QRCodeForm = ({ qrType, onBack }) => {
     await generateQRCodeFromValues(values);
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
   const onValuesChange = (changedValues, allValues) => {
-    // Only auto-generate if we have the minimum required data
-    let shouldGenerate = false;
-
-    switch (qrType) {
-      case "url":
-        shouldGenerate = !!allValues.dataUrl;
-        break;
-      case "vcard":
-        shouldGenerate = !!(allValues.firstName || allValues.lastName);
-        break;
-      case "wifi":
-        shouldGenerate = !!allValues.ssid;
-        break;
-      case "email":
-        shouldGenerate = !!allValues.email;
-        break;
-      case "sms":
-      case "phone":
-        shouldGenerate = !!allValues.phone;
-        break;
-      case "text":
-        shouldGenerate = !!allValues.text;
-        break;
-      default:
-        shouldGenerate = false;
-    }
-
-    if (shouldGenerate) {
+    // Only auto-generate once the type's minimum required data is present
+    const isReady = type.isReady(allValues);
+    setReady(isReady);
+    if (isReady) {
       generateQRCodeFromValues(allValues);
     }
   };
@@ -176,41 +93,24 @@ const QRCodeForm = ({ qrType, onBack }) => {
     document.body.removeChild(link);
   };
 
-  const renderForm = () => {
-    switch (qrType) {
-      case "url":
-        return <UrlForm />;
-      case "vcard":
-        return <VCardForm />;
-      case "wifi":
-        return <WifiForm />;
-      case "email":
-        return <EmailForm />;
-      case "sms":
-        return <SmsForm />;
-      case "phone":
-        return <PhoneForm />;
-      case "text":
-        return <TextForm />;
-      default:
-        return null;
-    }
-  };
-
-  if (!qrType) {
-    onBack();
-    return null;
-  }
-
   return (
     <div>
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
-        <Space style={{ width: "100%" }}>
-          <Button icon={<ArrowLeftOutlined />} onClick={onBack} type="text" />
-          <Title level={4} style={{ margin: 0 }} block>
-            {getTypeTitle(qrType)}
-          </Title>
-        </Space>
+        <div>
+          <Space style={{ width: "100%" }} align="start">
+            <Link to="/" aria-label="Back to all QR code types">
+              <Button icon={<ArrowLeftOutlined />} type="text" />
+            </Link>
+            <Title level={1} style={{ margin: 0, fontSize: "1.6rem" }}>
+              {type.seo.h1}
+            </Title>
+          </Space>
+          <Paragraph
+            style={{ marginTop: 12, marginBottom: 0, color: "#555", maxWidth: 820 }}
+          >
+            {type.seo.intro}
+          </Paragraph>
+        </div>
 
         <Row gutter={[32, 32]}>
           <Col xs={24} md={14}>
@@ -219,15 +119,14 @@ const QRCodeForm = ({ qrType, onBack }) => {
               name="basic"
               layout="vertical"
               onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
               onValuesChange={onValuesChange}
               autoComplete="off"
               initialValues={{
-                qrType,
+                qrType: type.key,
                 ...getDefaultQRCodeOptions(),
               }}
             >
-              {renderForm()}
+              <TypeForm />
 
               <QRCodeCustomization />
 
@@ -252,9 +151,14 @@ const QRCodeForm = ({ qrType, onBack }) => {
                 onDownload={onDownloadImage}
                 qrDataString={qrDataString}
               />
+              {type.dynamicCapable && (
+                <DynamicCodePanel type={type} payload={qrDataString} ready={ready} />
+              )}
             </div>
           </Col>
         </Row>
+
+        <SeoContent type={type} />
       </Space>
     </div>
   );

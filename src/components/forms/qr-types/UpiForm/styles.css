@@ -1,0 +1,16 @@
+.upi-form {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.upi-form .ant-card-body {
+  padding: 24px;
+}
+
+.upi-form .ant-form-item {
+  margin-bottom: 24px;
+}
+
+.upi-form .ant-form-item-label {
+  font-weight: 500;
+}
