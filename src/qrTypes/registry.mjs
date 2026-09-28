@@ -8,6 +8,14 @@
 export const SITE_URL = "https://qrx.samita.in";
 export const SITE_NAME = "QRx";
 
+// Dynamic QR plans. The numbers here are for display only: the database
+// enforces the same limits in supabase/migrations (plan_limits table), so
+// keep the two in sync.
+export const PLANS = {
+  free: { label: "Free", maxActiveCodes: 3, historyDays: 90 },
+  pro: { label: "Pro", maxActiveCodes: 100, historyDays: null },
+};
+
 // vCard 3.0 and WiFi payloads use ; , : and \ as delimiters, so user input
 // containing them has to be escaped.
 const escapeVCard = (value = "") =>
@@ -113,6 +121,7 @@ export const buildMapsPayload = ({ location }) =>
 export const qrTypes = [
   {
     key: "url",
+    dynamicCapable: true,
     slug: "url-qr-code-generator",
     label: "Website URL",
     shortDescription: "Generate a QR code for any website link",
@@ -385,6 +394,7 @@ export const qrTypes = [
   },
   {
     key: "whatsapp",
+    dynamicCapable: true,
     slug: "whatsapp-qr-code-generator",
     label: "WhatsApp",
     shortDescription: "Open a WhatsApp chat with your number",
@@ -417,6 +427,7 @@ export const qrTypes = [
   },
   {
     key: "maps",
+    dynamicCapable: true,
     slug: "google-maps-qr-code-generator",
     label: "Google Maps",
     shortDescription: "Send people straight to a location or address",

@@ -43,10 +43,11 @@ const setJsonLd = (data) => {
  * Writes the per-page <head> tags. The prerender script snapshots the DOM
  * after this runs, so crawlers receive the same tags without executing JS.
  */
-const useSeo = ({ title, description, path, jsonLd }) => {
+const useSeo = ({ title, description, path, jsonLd, noindex = false }) => {
   useEffect(() => {
     const url = `${SITE_URL}${path === "/" ? "" : path}`;
     document.title = title;
+    setMeta('meta[name="robots"]', "content", noindex ? "noindex, nofollow" : "index, follow");
     setMeta('meta[name="description"]', "content", description);
     setMeta('meta[property="og:title"]', "content", title);
     setMeta('meta[property="og:description"]', "content", description);
@@ -55,7 +56,7 @@ const useSeo = ({ title, description, path, jsonLd }) => {
     setMeta('meta[property="twitter:description"]', "content", description);
     setLink("canonical", url);
     setJsonLd(jsonLd);
-  }, [title, description, path, jsonLd]);
+  }, [title, description, path, jsonLd, noindex]);
 };
 
 export default useSeo;

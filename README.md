@@ -16,7 +16,8 @@ A modern, user-friendly web application for generating customizable QR codes. Bu
   - Adjustable width
 - Download generated QR codes
 - URL validation for secure (https) links
-- Fully client-side: nothing you enter is uploaded anywhere
+- Fully client-side for static codes: nothing you enter is uploaded anywhere
+- Optional dynamic QR codes (URL, WhatsApp and Google Maps types): a short link you can redirect later, with scan counts, unique visitors and per-day totals; Pro accounts also see location, device and browser per scan
 - Modern, responsive UI using Ant Design
 - Real-time QR code preview
 
@@ -82,6 +83,17 @@ The production application will be available at [http://localhost](http://localh
    - Adjust width (200-1200px)
 4. Click the generate button to create the QR code
 5. Download the generated QR code using the download button
+
+## Dynamic QR codes and scan analytics
+
+Static codes need no backend. Dynamic codes need two extra pieces, both optional:
+
+1. **A Supabase project** for magic-link sign-in, the `dynamic_codes` and `scan_events` tables and the stats functions. Apply `supabase/migrations/*.sql` and follow `supabase/README.md`.
+2. **The redirect Worker** in `worker/`, deployed to Cloudflare. It answers `<REACT_APP_REDIRECT_BASE>/<short_code>` with a 302 and logs the scan. See `worker/README.md`.
+
+Then copy `.env.example` to `.env.local` and fill in `REACT_APP_SUPABASE_URL`, `REACT_APP_SUPABASE_ANON_KEY` and `REACT_APP_REDIRECT_BASE`. When those are empty the app hides every dynamic feature and behaves as a static generator.
+
+Plans: Free gets 3 active dynamic codes with total and unique scans over the last 90 days. Pro gets 100 codes, unlimited history and per-scan location, device and browser. Limits live in the `plan_limits` table and are enforced in the database.
 
 ## Adding a QR code type
 

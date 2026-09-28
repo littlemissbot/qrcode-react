@@ -9,9 +9,13 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { ConfigProvider, theme, Layout, Typography } from "antd";
+import { ConfigProvider, theme, Layout, Typography, Space, App as AntApp } from "antd";
 import TypeSelection from "./pages/TypeSelection";
 import QRCodeForm from "./pages/QRCodeForm";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import CodeDetail from "./pages/CodeDetail";
+import { AuthProvider, RequireAuth, useAuth } from "./auth/AuthProvider";
 import { findTypeBySlug, findTypeByKey, pathForType } from "./qrTypes";
 import QrCodeLogo from "./qrcode.png";
 
@@ -37,10 +41,43 @@ export const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<TypeSelection />} />
     <Route path="/form" element={<LegacyFormRedirect />} />
+    <Route path="/login" element={<Login />} />
+    <Route
+      path="/dashboard"
+      element={
+        <RequireAuth>
+          <Dashboard />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/dashboard/codes/:id"
+      element={
+        <RequireAuth>
+          <CodeDetail />
+        </RequireAuth>
+      }
+    />
     <Route path="/:slug" element={<TypePage />} />
     <Route path="*" element={<Navigate to="/" replace />} />
   </Routes>
 );
+
+// Rendered client-side only after auth resolves, so the prerendered HTML is
+// identical whether or not the visitor is signed in.
+const HeaderNav = () => {
+  const { enabled, loading, session } = useAuth();
+  if (!enabled || loading) return null;
+  return (
+    <Space size="middle" className="header-nav">
+      {session ? (
+        <Link to="/dashboard">Dashboard</Link>
+      ) : (
+        <Link to="/login">Sign in</Link>
+      )}
+    </Space>
+  );
+};
 
 function App() {
   const currentYear = new Date().getFullYear();
@@ -61,52 +98,57 @@ function App() {
           algorithm: theme.lightAlgorithm,
         }}
       >
-        <BrowserRouter>
-          <Layout style={{ minHeight: "100vh" }}>
-            <Header
-              className="header"
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <Link
-                to="/"
-                style={{ display: "flex", alignItems: "center" }}
-                aria-label="QRx home"
-              >
-                <img
-                  src={QrCodeLogo}
-                  alt="QR Code Logo"
+        <AntApp>
+          <BrowserRouter>
+            <AuthProvider>
+              <Layout style={{ minHeight: "100vh" }}>
+                <Header
+                  className="header"
+                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                >
+                  <Link
+                    to="/"
+                    style={{ display: "flex", alignItems: "center" }}
+                    aria-label="QRx home"
+                  >
+                    <img
+                      src={QrCodeLogo}
+                      alt="QR Code Logo"
+                      style={{
+                        height: 40,
+                        marginRight: 10,
+                        background: "#fff",
+                        borderRadius: 8,
+                        padding: 4,
+                      }}
+                    />
+                    <Title level={4} className="projecttitle" style={{ margin: 0 }}>
+                      QRx
+                    </Title>
+                  </Link>
+                  <HeaderNav />
+                </Header>
+                <Content
+                  className="content"
+                  style={{ padding: "24px", position: "relative" }}
+                >
+                  <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+                    <AppRoutes />
+                  </div>
+                </Content>
+                <Footer
                   style={{
-                    height: 40,
-                    marginRight: 10,
-                    background: "#fff",
-                    borderRadius: 8,
-                    padding: 4,
+                    textAlign: "center",
+                    background: "#ebe9ee",
+                    color: "#888",
                   }}
-                />
-                <Title level={4} className="projecttitle" style={{ margin: 0 }}>
-                  QRx
-                </Title>
-              </Link>
-            </Header>
-            <Content
-              className="content"
-              style={{ padding: "24px", position: "relative" }}
-            >
-              <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-                <AppRoutes />
-              </div>
-            </Content>
-            <Footer
-              style={{
-                textAlign: "center",
-                background: "#ebe9ee",
-                color: "#888",
-              }}
-            >
-              Copyrights &copy; {currentYear} Samita. All right reserved
-            </Footer>
-          </Layout>
-        </BrowserRouter>
+                >
+                  Copyrights &copy; {currentYear} Samita. All right reserved
+                </Footer>
+              </Layout>
+            </AuthProvider>
+          </BrowserRouter>
+        </AntApp>
       </ConfigProvider>
     </div>
   );

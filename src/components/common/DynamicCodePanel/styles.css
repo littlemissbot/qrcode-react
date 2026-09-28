@@ -1,0 +1,19 @@
+.dynamic-code-panel {
+  margin-top: 16px;
+  background: #f7f6f9;
+  border-color: #ddd7e6;
+}
+
+.dynamic-code-benefits {
+  margin: 0;
+  padding-left: 4px;
+  list-style: none;
+  color: #444;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.dynamic-code-benefits .anticon {
+  color: #392b58;
+  margin-right: 6px;
+}

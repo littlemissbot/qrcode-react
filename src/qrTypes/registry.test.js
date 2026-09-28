@@ -31,6 +31,13 @@ describe("registry", () => {
     });
   });
 
+  test("only link-type codes are dynamic-capable (a 302 must land on http(s))", () => {
+    const dynamic = qrTypes.filter((t) => t.dynamicCapable).map((t) => t.key);
+    expect(dynamic.sort()).toEqual(["maps", "url", "whatsapp"]);
+    expect(buildWhatsAppPayload({ phone: "+911" })).toMatch(/^https:\/\//);
+    expect(buildMapsPayload({ location: "x" })).toMatch(/^https:\/\//);
+  });
+
   test("findTypeBySlug", () => {
     expect(findTypeBySlug("wifi-qr-code-generator").key).toBe("wifi");
     expect(findTypeBySlug("nope")).toBeUndefined();

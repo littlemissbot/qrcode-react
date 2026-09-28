@@ -23,6 +23,15 @@
   font-optical-sizing: auto;
   font-size: 1.85rem;
 }
+.App .header .header-nav a {
+  color: #fff;
+  opacity: 0.85;
+  font-weight: 500;
+}
+.App .header .header-nav a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
 .App .header .projecttitle small {
   font-size: 50%;
 }

@@ -4,6 +4,7 @@ import { Form, Row, Col, Button, Typography, Space } from "antd";
 import { BarcodeOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import QRCodePreview from "../components/common/QRCodePreview";
 import SeoContent from "../components/common/SeoContent";
+import DynamicCodePanel from "../components/common/DynamicCodePanel";
 import QRCodeCustomization from "../components/forms/QRCodeCustomization";
 import useSeo from "../hooks/useSeo";
 import { pathForType } from "../qrTypes";
@@ -30,6 +31,7 @@ const QRCodeForm = ({ type }) => {
   const [dataMime, setDataMime] = useState("image/png");
   const [loading, setLoading] = useState(false);
   const [qrDataString, setQrDataString] = useState("");
+  const [ready, setReady] = useState(false);
   const [form] = Form.useForm();
   const TypeForm = type.Form;
 
@@ -68,7 +70,9 @@ const QRCodeForm = ({ type }) => {
 
   const onValuesChange = (changedValues, allValues) => {
     // Only auto-generate once the type's minimum required data is present
-    if (type.isReady(allValues)) {
+    const isReady = type.isReady(allValues);
+    setReady(isReady);
+    if (isReady) {
       generateQRCodeFromValues(allValues);
     }
   };
@@ -147,6 +151,9 @@ const QRCodeForm = ({ type }) => {
                 onDownload={onDownloadImage}
                 qrDataString={qrDataString}
               />
+              {type.dynamicCapable && (
+                <DynamicCodePanel type={type} payload={qrDataString} ready={ready} />
+              )}
             </div>
           </Col>
         </Row>

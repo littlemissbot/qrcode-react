@@ -46,3 +46,18 @@ test("falls back to the landing page for unknown routes", () => {
   renderAt("/does-not-exist");
   expect(screen.getByText(/welcome to qrx/i)).toBeInTheDocument();
 });
+
+test("login page explains when dynamic codes are not configured", () => {
+  renderAt("/login");
+  expect(screen.getByText(/not enabled on this deployment/i)).toBeInTheDocument();
+});
+
+test("dashboard is not reachable without Supabase configured", () => {
+  renderAt("/dashboard");
+  expect(screen.getByText(/not enabled on this deployment/i)).toBeInTheDocument();
+});
+
+test("type pages hide the dynamic panel when Supabase is not configured", () => {
+  renderAt("/url-qr-code-generator");
+  expect(screen.queryByText(/make it dynamic/i)).not.toBeInTheDocument();
+});

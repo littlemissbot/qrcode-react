@@ -15,7 +15,8 @@ npm run build                            # react-scripts build, then postbuild: 
 SKIP_PRERENDER=1 npm run build           # build without Chromium (crawlers would get an empty shell; never deploy this)
 PRERENDER_CHROMIUM=/path/to/chrome npm run prerender   # rerun only the prerender step against an existing build/
 CI=true npm run build                    # what Docker/CI effectively do: ESLint warnings become errors
-npm run lint                             # eslint over src/ and scripts/ (CRA "react-app" preset)
+npm run lint                             # eslint over src/ and scripts/ (CRA "react-app" preset); also lint worker/src before pushing
+cd worker && npm run deploy              # deploy the Cloudflare redirect Worker (needs wrangler login + secrets, see worker/README.md)
 CI=true npx react-scripts test --watchAll=false            # run all tests once, non-interactive
 CI=true npx react-scripts test --watchAll=false src/App.test.js   # run a single test file
 npx react-scripts test -t "pattern"      # run tests whose name matches, in watch mode
@@ -25,6 +26,8 @@ Notes on current state (verified):
 - `CI=true npm run build` treats every ESLint warning as an error, and Docker/CI runners set `CI`. Keep lint at zero warnings before pushing.
 - The prerender step (`scripts/prerender.mjs`) needs a Chromium binary. It checks `$PRERENDER_CHROMIUM`, then `/opt/pw-browsers/chromium` (Claude Code cloud sessions), then the usual Linux paths, then playwright-core's own lookup. The Dockerfile installs Alpine's chromium. It aborts the build on any page JS error, so a runtime crash on a route fails `npm run build` rather than shipping.
 - `src/setupTests.js` mocks `window.matchMedia` and `window.scrollTo`, because antd's responsive grid calls the former on mount and the form page calls the latter, and jsdom implements neither.
+- Tests and the default build run with no `REACT_APP_SUPABASE_*` variables, so every dynamic-code feature is hidden and `supabase` is `null`. To exercise those UI paths locally, build with placeholder values (`REACT_APP_SUPABASE_URL=https://x.supabase.co REACT_APP_SUPABASE_ANON_KEY=x npm run build`); the prerender still succeeds because auth resolves client-side.
+- The Worker has no test runner of its own. Its handler is plain ESM that runs under Node 22 (global `fetch`, `Request`, `Response`, `crypto.subtle`), so it can be exercised by importing `worker/src/index.js` and stubbing `globalThis.fetch`.
 
 ## Architecture
 
@@ -43,6 +46,14 @@ Data flow inside `QRCodeForm`:
 5. `components/common/QRCodePreview` is presentational: shows the image or spinner, the download button, and an optional dump of the raw payload string.
 
 Adding a new QR type means: one entry in `registry.mjs` (with SEO copy), one `qr-types/<Name>Form` component, and one line mapping the key to its icon and form in `qrTypes/index.js`. The route, home-page card, sitemap entry and prerendered page follow automatically. Add payload tests to `src/qrTypes/registry.test.js`.
+
+## Dynamic codes (Supabase + Cloudflare Worker)
+
+Static generation stays fully client-side. Dynamic codes add three parts, all optional and all disabled when `REACT_APP_SUPABASE_URL`/`REACT_APP_SUPABASE_ANON_KEY` are unset (`src/lib/supabase.js` exports `supabase = null` and `isDynamicEnabled()`):
+
+- **Database** (`supabase/migrations/20260928120000_dynamic_codes.sql`): `profiles` (one per auth user, `plan` = free|pro, created by a trigger on `auth.users`), `plan_limits` (max active codes, history days), `dynamic_codes` (owner, unique `short_code`, `destination` must be http(s), `archived_at`), and `scan_events` (one row per scan, no IP; `visitor_hash` = sha256 of ip|ua|code|day). Row-level security: owners read/write their own codes; per-scan rows are readable only by Pro owners; nobody but the service role inserts scans. A `before insert` trigger enforces the plan's code limit, so the client-side check is cosmetic. Aggregates come from two `security definer` RPCs, `list_code_stats()` and `get_code_stats(uuid)`, which clip history to the plan window and return country/device breakdowns only for Pro.
+- **Redirect Worker** (`worker/src/index.js`): `GET /<code>` or `/r/<code>` looks the code up through Supabase REST with the service-role key (secret), returns a 302 with `Cache-Control: no-store`, and in `ctx.waitUntil` inserts a `scan_events` row with `request.cf` geo and the UA classification from `src/lib/parseUserAgent.mjs` (shared with the app's tests; keep it import-free). Known crawlers and HEAD requests are redirected but not counted. Dynamic codes encode `REDIRECT_BASE/<short_code>` where `REDIRECT_BASE` comes from `REACT_APP_REDIRECT_BASE` (default `<SITE_URL>/r`); changing it after codes are printed breaks them.
+- **App**: `src/auth/AuthProvider.jsx` holds the session and profile and exports `RequireAuth` for `/dashboard` and `/dashboard/codes/:id` (both `noindex`, both excluded in `robots.txt`). `src/lib/dynamicCodes.js` is the only data-access module. `components/common/DynamicCodePanel` sits under the preview on types flagged `dynamicCapable` in the registry (only http(s) payloads: url, whatsapp, maps, because a 302 to `mailto:`/`tel:`/`upi:` is unreliable on phones); when the visitor is signed out it parks the draft in `sessionStorage` and `Dashboard` creates it after the magic link returns. `pages/CodeDetail.jsx` renders the QR of the short URL with the same `QRCodeCustomization` form, lets the owner edit the destination or archive the code, and shows aggregates for everyone and per-scan tables for Pro. Plan copy in the UI reads `PLANS` from the registry; the numbers must match `plan_limits` in the migration.
 
 Other things worth knowing:
 - Colour pickers: antd `ColorPicker` yields a colour object once touched but the default is a hex string, so `generateQRCode` handles both (`typeof === "string"` vs `.toHexString()`). Keep that when adding colour fields.
